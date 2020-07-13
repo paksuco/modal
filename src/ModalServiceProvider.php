@@ -21,7 +21,6 @@ class ModalServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        dd("taha");
         $this->handleConfigs();
         $this->handleViews();
     }
@@ -60,7 +59,7 @@ class ModalServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__ . '/../views', 'paksuco-modal');
 
         $this->publishes([__DIR__.'/../views' => base_path('resources/views/vendor/paksuco-modal')]);
-dd("taha");
+
         Livewire::component("paksuco-modal::modal", \Paksuco\Modal\Components\Modal::class);
     }
 }
