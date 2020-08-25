@@ -10,7 +10,8 @@
             @livewire($view, ["args" => $args])
         </div>
     </div>
-    <div class="pm-modal-backdrop bg-opacity-50 bg-black w-screen h-screen absolute inset-0 z-0 pointer-events-none"></div>
+    <div class="pm-modal-backdrop bg-opacity-50 bg-black w-screen h-screen absolute inset-0 z-0 pointer-events-none">
+    </div>
 </div>
 @else
 <div></div>
