@@ -12,16 +12,18 @@ class Modal extends Component
     public $item;
     public $args;
     public $isNewRecord;
+    public $updates;
 
     protected $listeners = ["showModal" => "show", "hideModal" => "hide"];
 
-    public function mount()
+    public function mount($updates = [])
     {
         $this->shown = false;
         $this->view = null;
         $this->args = null;
         $this->item = null;
         $this->isNewRecord = true;
+        $this->updates = $updates;
     }
 
     public function show($title, $view, $args)
@@ -43,7 +45,18 @@ class Modal extends Component
 
         $this->item = $item->toArray();
 
+        foreach ($this->item as $key => $value) {
+            $this->updated("item." . $key, $value);
+        }
+
         $this->shown = true;
+    }
+
+    public function updated($name, $value)
+    {
+        if (array_key_exists($name, $this->updates)) {
+            $this->updates[$name]($this, $value);
+        }
     }
 
     public function update()

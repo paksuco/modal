@@ -1,5 +1,5 @@
 @if($view && $shown)
-<div class="pm-modal-container fixed flex overflow-y-scroll overflow-x-hidden inset-0
+<div class="pm-modal-container fixed flex inset-0
     items-center justify-center w-screen h-screen" style="z-index: 20001">
     <div class="paksuco-modal absolute mx-auto my-auto bg-white z-10 rounded
         text-sm shadow-lg leading-none p-4">
@@ -12,7 +12,6 @@
             </div>
         </div>
         <div class="pm-body">
-
             @if ($errors->any())
             <x-paksuco-modal-alert color="red" textcolor="white" icon="fa fa-exclamation-triangle">
                 <p class="mb-2 pl-1">@lang("Oops, there was a problem, please check your input and submit the form
