@@ -48,19 +48,19 @@ class ModalServiceProvider extends ServiceProvider
     private function handleConfigs()
     {
         $configPath = __DIR__ . '/../config/paksuco-modal.php';
-
         $this->publishes([$configPath => base_path('config/paksuco-modal.php')]);
-
         $this->mergeConfigFrom($configPath, 'paksuco-modal');
     }
 
     private function handleViews()
     {
         $this->loadViewsFrom(__DIR__ . '/../views', 'paksuco-modal');
-
         $this->publishes([__DIR__.'/../views' => base_path('resources/views/vendor/paksuco-modal')]);
 
         Livewire::component("paksuco-modal::modal", \Paksuco\Modal\Components\Modal::class);
+        $this->loadViewComponentsAs("paksuco-modal", [
+            Components\Alert::class
+        ]);
     }
 }
 
