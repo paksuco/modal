@@ -1,8 +1,8 @@
 @if($view && $shown)
-<div class="pm-modal-container fixed flex inset-0
-    items-center justify-center w-screen h-screen" style="z-index: 20001">
-    <div class="paksuco-modal absolute mx-auto my-auto bg-white z-10 rounded
-        text-sm shadow-lg leading-none p-4">
+<div class="paksuco-modal-container fixed flex inset-0 sm:py-24
+    items-center justify-center overflow-y-auto w-screen h-screen" style="z-index: 20001">
+    <div class="paksuco-modal mx-auto my-auto bg-white z-10 rounded
+        text-sm shadow-md leading-none p-4">
         <div class="pm-header text-sm text-cool-gray-700 font-bold border-b pb-2
             pr-48 rounded-t bg-white uppercase relative">
             {!! $title !!}
@@ -33,7 +33,7 @@
             @include($view)
         </div>
     </div>
-    <div class="pm-modal-backdrop bg-opacity-50 bg-black w-screen h-screen absolute
+    <div class="paksuco-modal-backdrop bg-opacity-50 bg-black w-screen h-screen fixed
         inset-0 z-0 pointer-events-none">
     </div>
 </div>
@@ -42,12 +42,19 @@
 @endif
 @push("footer-scripts")
 <script>
+    var showModal = function(...args) {
+        livewire.emitTo("paksuco-modal::modal", "showModal", ...args);
+        document.querySelector("body").classList.add("overflow-hidden");
+    };
     var hideModal = function() {
         livewire.emitTo("paksuco-modal::modal", "hideModal");
     };
-    var showModal = function(...args) {
-        livewire.emitTo("paksuco-modal::modal", "showModal", ...args);
-    };
+    window.addEventListener("show-modal", function(){
+        document.querySelector(".paksuco-modal-container").scrollTop = 0;
+    });
+    window.addEventListener("hide-modal", function(){
+        document.querySelector("body").classList.remove("overflow-hidden");
+    });
     window.addEventListener('keyup', function (e) {
         if ((e.key=='Escape'||e.key=='Esc'||e.keyCode==27)) {
             hideModal();

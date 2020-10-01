@@ -48,8 +48,8 @@ class Modal extends Component
         foreach ($this->item as $key => $value) {
             $this->updated("item." . $key, $value);
         }
-
         $this->shown = true;
+        $this->dispatchBrowserEvent("show-modal");
     }
 
     public function updated($name, $value)
@@ -59,42 +59,24 @@ class Modal extends Component
         }
     }
 
-    public function update()
+    public function trigger($method, $params = [])
     {
         $controller = app()->make($this->args["controller"]);
-        $class = $this->args["model"];
-        $item = $class::findOrFail($this->args["id"]);
-        $result = $controller->update($item, $this->item);
-        if ($result) {
-            $this->hide();
-            $this->emit("refresh");
-        }
-    }
-
-    public function save()
-    {
-        $controller = app()->make($this->args["controller"]);
-        $result = $controller->store($this->item);
-        if ($result) {
-            $this->hide();
-            $this->emit("refresh");
-        }
-    }
-
-    public function delete()
-    {
-        $controller = app()->make($this->args["controller"]);
-        $class = $this->args["model"];
-        $item = $class::findOrFail($this->args["id"]);
-        $result = $controller->destroy($item);
-        if ($result) {
-            $this->hide();
-            $this->emit("refresh");
+        if (method_exists($controller, $method)) {
+            $result = call_user_func_array(
+                array($controller, $method),
+                array_merge($params, ["item" => $this->item])
+            );
+            if ($result) {
+                $this->hide();
+                $this->emit("refresh");
+            }
         }
     }
 
     public function hide()
     {
+        $this->dispatchBrowserEvent("hide-modal");
         $this->shown = false;
     }
 
