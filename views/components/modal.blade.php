@@ -1,5 +1,5 @@
 @if($view && $shown)
-<div class="paksuco-modal-container fixed flex inset-0 sm:py-24
+<div class="paksuco-modal-container fixed flex inset-0 sm:py-12
     items-center justify-center overflow-y-auto w-screen h-screen" style="z-index: 20001">
     <div class="paksuco-modal mx-auto my-auto bg-white z-10 rounded
         text-sm shadow-md leading-none p-4">
