@@ -36,18 +36,23 @@ class Modal extends Component
         $this->args = $args;
 
         $class = $this->args["model"];
+        $instance = new $class;
 
         $this->isNewRecord = $this->args["id"] == null;
 
+        $usesSoftDelete = $instance->hasGlobalScope('Illuminate\Database\Eloquent\SoftDeletingScope');
+
         $item = $this->isNewRecord ?
-        new $class :
-        $class::find($this->args["id"]);
+            $instance : ($usesSoftDelete ?
+                $class::withTrashed()->find($this->args["id"]) :
+                $class::find($this->args["id"]));
 
         $this->item = $item->toArray();
 
         foreach ($this->item as $key => $value) {
             $this->updated("item." . $key, $value);
         }
+
         $this->shown = true;
         $this->dispatchBrowserEvent("show-modal");
     }
