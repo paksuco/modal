@@ -28,8 +28,6 @@
                 {{ session("success") }}
             </x-paksuco-settings-alert>
             @endif
-
-
             @include($view)
         </div>
     </div>
