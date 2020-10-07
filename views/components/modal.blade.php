@@ -2,7 +2,7 @@
 <div class="paksuco-modal-container fixed flex inset-0 sm:py-12
     items-center justify-center overflow-y-auto w-screen h-screen" style="z-index: 20001">
     <div class="paksuco-modal mx-auto my-auto bg-white z-10 rounded
-        text-sm shadow-md leading-none p-4">
+        text-sm shadow-md leading-none p-4 {{isset($modal_class) ? $modal_class : ""}}">
         <div class="pm-header text-sm text-cool-gray-700 font-bold border-b pb-2
             pr-48 rounded-t bg-white uppercase relative">
             {!! $title !!}
@@ -14,7 +14,7 @@
         <div class="pm-body">
             @if ($errors->any())
             <x-paksuco-modal-alert color="red" textcolor="white" icon="fa fa-exclamation-triangle">
-                <p class="mb-2 pl-1">@lang("Oops, there was a problem, please check your input and submit the form
+                <p class="mb-2 pl-1 pr-5">@lang("Oops, there was a problem, please check your input and submit the form
                     again.")</p>
                 <ul>
                     @foreach ($errors->all() as $error)
@@ -47,8 +47,25 @@
     var hideModal = function() {
         livewire.emitTo("paksuco-modal::modal", "hideModal");
     };
+
+    var wireFilter = function(items) {
+        let output = [];
+        for (let i of items) {
+            let attributes = Array.prototype.slice.call(i.attributes).map(i => i.name).join(", ");
+            if(/wire:model/.test(attributes)){
+                output.push(i);
+            }
+        }
+        return output;
+    };
+
     window.addEventListener("show-modal", function(){
-        document.querySelector(".paksuco-modal-container").scrollTop = 0;
+        var modalContainer = document.querySelector(".paksuco-modal-container");
+        modalContainer.scrollTop = 0;
+        let filtered = wireFilter(modalContainer.querySelectorAll("*"));
+        filtered.forEach(elem => {
+            elem.dispatchEvent(new Event("input", { 'bubbles': true }));
+        });
     });
     window.addEventListener("hide-modal", function(){
         document.querySelector("body").classList.remove("overflow-hidden");

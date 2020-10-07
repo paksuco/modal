@@ -11,6 +11,7 @@ class Modal extends Component
     public $view;
     public $item;
     public $args;
+    public $modal_class;
     public $isNewRecord;
     public $updates;
 
@@ -18,6 +19,7 @@ class Modal extends Component
 
     public function mount($updates = [])
     {
+        $this->modal_class = "";
         $this->shown = false;
         $this->view = null;
         $this->args = null;
@@ -37,6 +39,8 @@ class Modal extends Component
 
         $class = $this->args["model"];
         $instance = new $class;
+
+        $this->modal_class = isset($args["modal_class"]) ? $args["modal_class"] : "";
 
         $this->isNewRecord = $this->args["id"] == null;
 
