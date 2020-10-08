@@ -72,8 +72,10 @@
     window.addEventListener("show-modal", function(){
         var modalContainer = document.querySelector(".paksuco-modal-container");
         modalContainer.scrollTop = 0;
-        modalContainer.addEventListener("click", function(){
-            document.querySelector(".paksuco-modal").focus();
+        modalContainer.addEventListener("click", function(e){
+            if(e.target === modalContainer){
+                document.querySelector(".paksuco-modal").focus();
+            }
         });
         let filtered = wireFilter(modalContainer.querySelectorAll("*"));
         filtered.forEach(elem => {
@@ -81,9 +83,11 @@
         });
         document.querySelector(".paksuco-modal").focus();
     });
+
     window.addEventListener("hide-modal", function() {
         document.querySelector("body").classList.remove("overflow-hidden");
     });
+
     document.addEventListener('keyup', function (e) {
         if(e.target.classList.contains("paksuco-modal")){
             if ((e.key=='Escape'||e.key=='Esc'||e.keyCode==27)) {
