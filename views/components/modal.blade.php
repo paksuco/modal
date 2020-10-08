@@ -1,5 +1,5 @@
 @if($view && $shown)
-<div class="paksuco-modal-container fixed flex inset-0 sm:py-12
+<div class="paksuco-modal-container opacity-0 fixed flex inset-0 sm:py-12
     items-center justify-center overflow-y-auto w-screen h-screen" style="z-index: 20001">
     <div tabindex="-1" class="paksuco-modal mx-auto my-auto bg-white z-10 rounded
         text-sm shadow-md leading-none p-4 {{isset($modal_class) ? $modal_class : ""}}">
@@ -8,7 +8,7 @@
             {!! $title !!}
             <div class="absolute flex items-center align-center inset-y-0 right-0 leading-0">
                 <i class="fa fa-times text-cool-gray-700 text-sm hover:text-cool-gray-500
-                    pb-2 cursor-pointer" wire:click="hide"></i>
+                    pb-2 cursor-pointer" onclick="hideModal()"></i>
             </div>
         </div>
         <div class="pm-body">
@@ -38,6 +38,15 @@
 @else
 <div></div>
 @endif
+
+@push("head-styles")
+<style>
+    .paksuco-modal-container {
+        transition: opacity 1s;
+    }
+</style>
+@endpush
+
 @push("footer-scripts")
 <script>
     var showModal = function(...args) {
@@ -45,6 +54,8 @@
         document.querySelector("body").classList.add("overflow-hidden");
     };
     var hideModal = function() {
+        var modalContainer = document.querySelector(".paksuco-modal-container");
+        modalContainer.classList.add("opacity-0");
         livewire.emitTo("paksuco-modal::modal", "hideModal");
     };
 
@@ -70,6 +81,7 @@
             elem.dispatchEvent(new Event("input", { 'bubbles': true }));
         });
         document.querySelector(".paksuco-modal").focus();
+        modalContainer.classList.remove("opacity-0");
     });
     window.addEventListener("hide-modal", function() {
         document.querySelector("body").classList.remove("overflow-hidden");
