@@ -14,8 +14,9 @@ class Modal extends Component
     public $modal_class;
     public $isNewRecord;
     public $updates;
+    public $updated = false;
 
-    protected $listeners = ["showModal" => "show", "hideModal" => "hide"];
+    protected $listeners = ["showModal" => "show", "hideModal" => "hide", "refresh" => "refresh"];
 
     public function mount($updates = [])
     {
@@ -47,9 +48,9 @@ class Modal extends Component
         $usesSoftDelete = $instance->hasGlobalScope('Illuminate\Database\Eloquent\SoftDeletingScope');
 
         $item = $this->isNewRecord ?
-            $instance : ($usesSoftDelete ?
-                $class::withTrashed()->find($this->args["id"]) :
-                $class::find($this->args["id"]));
+        $instance : ($usesSoftDelete ?
+            $class::withTrashed()->find($this->args["id"]) :
+            $class::find($this->args["id"]));
 
         $this->item = $item->toArray();
 
@@ -59,6 +60,13 @@ class Modal extends Component
 
         $this->shown = true;
         $this->dispatchBrowserEvent("show-modal");
+    }
+
+    public function refresh()
+    {
+        $this->updated = !$this->updated;
+        $this->shown = true;
+        $this->render();
     }
 
     public function updated($name, $value)
