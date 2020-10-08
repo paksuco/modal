@@ -1,7 +1,7 @@
 @if($view && $shown)
 <div class="paksuco-modal-container fixed flex inset-0 sm:py-12
     items-center justify-center overflow-y-auto w-screen h-screen" style="z-index: 20001">
-    <div class="paksuco-modal mx-auto my-auto bg-white z-10 rounded
+    <div tabindex="-1" class="paksuco-modal mx-auto my-auto bg-white z-10 rounded
         text-sm shadow-md leading-none p-4 {{isset($modal_class) ? $modal_class : ""}}">
         <div class="pm-header text-sm text-cool-gray-700 font-bold border-b pb-2
             pr-48 rounded-t bg-white uppercase relative">
@@ -62,17 +62,23 @@
     window.addEventListener("show-modal", function(){
         var modalContainer = document.querySelector(".paksuco-modal-container");
         modalContainer.scrollTop = 0;
+        modalContainer.addEventListener("click", function(){
+            document.querySelector(".paksuco-modal").focus();
+        });
         let filtered = wireFilter(modalContainer.querySelectorAll("*"));
         filtered.forEach(elem => {
             elem.dispatchEvent(new Event("input", { 'bubbles': true }));
         });
+        document.querySelector(".paksuco-modal").focus();
     });
-    window.addEventListener("hide-modal", function(){
+    window.addEventListener("hide-modal", function() {
         document.querySelector("body").classList.remove("overflow-hidden");
     });
-    window.addEventListener('keyup', function (e) {
-        if ((e.key=='Escape'||e.key=='Esc'||e.keyCode==27)) {
-            hideModal();
+    document.addEventListener('keyup', function (e) {
+        if(e.target.classList.contains("paksuco-modal")){
+            if ((e.key=='Escape'||e.key=='Esc'||e.keyCode==27)) {
+                hideModal();
+            }
         }
     }, true);
 </script>
