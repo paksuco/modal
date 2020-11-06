@@ -16,7 +16,7 @@ class Modal extends Component
     public $updates;
     public $updated = false;
 
-    protected $listeners = ["showModal" => "show", "hideModal" => "hide", "refresh" => "refresh"];
+    protected $listeners = ["showModal" => "show", "hideModal" => "hide", "refreshModal" => "refreshModal"];
 
     public function mount($updates = [])
     {
@@ -62,7 +62,7 @@ class Modal extends Component
         $this->dispatchBrowserEvent("show-modal");
     }
 
-    public function refresh()
+    public function refreshModal()
     {
         $this->updated = !$this->updated;
         $this->shown = true;
