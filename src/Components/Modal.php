@@ -2,6 +2,7 @@
 
 namespace Paksuco\Modal\Components;
 
+use Illuminate\Support\Facades\Crypt;
 use Livewire\Component;
 
 class Modal extends Component
@@ -29,14 +30,23 @@ class Modal extends Component
         $this->updates = $updates;
     }
 
-    public function show($title, $view, $args)
+    public function show($hash)
     {
+        try {
+            $decrypted = Crypt::decryptString($hash);
+            $params = json_decode($decrypted, true);
+        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+            return false;
+        }
+
+        extract($params, EXTR_OVERWRITE);
+
         $this->resetErrorBag();
         $this->resetValidation();
 
         $this->title = $title;
         $this->view = $view;
-        $this->args = $args;
+        $this->args = $params;
 
         $class = $this->args["model"];
         $instance = new $class;
