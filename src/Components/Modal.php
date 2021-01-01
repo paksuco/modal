@@ -90,10 +90,9 @@ class Modal extends Component
     {
         $controller = app()->make($this->args["controller"]);
         if (method_exists($controller, $method)) {
-            $result = call_user_func_array(
-                array($controller, $method),
-                array_merge($params, ["item" => $this->item])
-            );
+            $result = $controller->callAction($method, array_merge($params, [
+                "item" => $this->item
+            ]));
             if ($result) {
                 $this->hide();
                 $this->emit("refresh");
