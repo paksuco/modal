@@ -1,21 +1,17 @@
 @if($view && $shown)
-<div class="paksuco-modal-container fixed flex inset-0 sm:py-12
-    items-center justify-center overflow-y-auto w-screen h-screen" style="z-index: 20001">
+<div class="fixed inset-0 flex items-center justify-center w-screen h-screen overflow-y-auto paksuco-modal-container sm:py-12" style="z-index: 20001">
     <div tabindex="-1" class="paksuco-modal mx-auto my-auto bg-white z-10 rounded
         text-sm shadow-md leading-none p-4 {{isset($modal_class) ? $modal_class : ""}}">
-        <div class="pm-header text-sm text-cool-gray-700 font-bold border-b pb-2
-            pr-48 rounded-t bg-white uppercase relative">
+        <div class="relative pb-2 pr-48 text-sm font-bold uppercase bg-white border-b rounded-t pm-header text-cool-gray-700">
             {!! $title !!}
-            <div class="absolute flex items-center align-center inset-y-0 right-0 leading-0">
-                <i class="fa fa-times text-cool-gray-700 text-sm hover:text-cool-gray-500
-                    pb-2 cursor-pointer" onclick="hideModal()"></i>
+            <div class="absolute inset-y-0 right-0 flex items-center align-center leading-0">
+                <i class="pb-2 text-sm cursor-pointer fa fa-times text-cool-gray-700 hover:text-cool-gray-500" onclick="hideModal()"></i>
             </div>
         </div>
         <div class="pm-body">
             @if ($errors->any())
             <x-paksuco-modal-alert color="red" textcolor="white" icon="fa fa-exclamation-triangle">
-                <p class="mb-2 pl-1 pr-5">@lang("Oops, there was a problem, please check your input and submit the form
-                    again.")</p>
+                <p class="pl-1 pr-5 mb-2">@lang("Oops, there was a problem, please check your input and submit the form again.")</p>
                 <ul>
                     @foreach ($errors->all() as $error)
                     <li>- {{ $error }}</li>
@@ -31,8 +27,7 @@
             @include($view)
         </div>
     </div>
-    <div class="paksuco-modal-backdrop bg-opacity-50 bg-black w-screen h-screen fixed
-        inset-0 z-0 pointer-events-none">
+    <div class="fixed inset-0 z-0 w-screen h-screen bg-black bg-opacity-50 pointer-events-none paksuco-modal-backdrop">
     </div>
 </div>
 @else
