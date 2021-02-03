@@ -17,7 +17,7 @@ class Modal extends Component
     public $updates;
     public $updated = false;
 
-    protected $listeners = ["showModal" => "show", "hideModal" => "hide", "refreshModal" => "refreshModal"];
+    protected $listeners = ["showModal" => "show", "hideModal" => "hide", "refreshModal" => "refreshModal", "setItemData", "setItemData"];
 
     public function mount($updates = [])
     {
@@ -58,9 +58,9 @@ class Modal extends Component
         $usesSoftDelete = $instance->hasGlobalScope('Illuminate\Database\Eloquent\SoftDeletingScope');
 
         $item = $this->isNewRecord ?
-        $instance : ($usesSoftDelete ?
-            $class::withTrashed()->find($this->args["id"]) :
-            $class::find($this->args["id"]));
+            $instance : ($usesSoftDelete ?
+                $class::withTrashed()->find($this->args["id"]) :
+                $class::find($this->args["id"]));
 
         $this->item = $item->toArray();
 
@@ -86,8 +86,16 @@ class Modal extends Component
         }
     }
 
+    public function setItemData($data)
+    {
+        if (["key", "value"] === array_keys($data)) {
+            $this->item[$data["key"]] = $data["value"];
+        }
+    }
+
     public function trigger($method, $params = [])
     {
+        dd($this->item);
         $controller = app()->make($this->args["controller"]);
         if (method_exists($controller, $method)) {
             $result = $controller->callAction($method, array_merge($params, [
