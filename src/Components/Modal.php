@@ -95,7 +95,6 @@ class Modal extends Component
 
     public function trigger($method, $params = [])
     {
-        dd($this->item);
         $controller = app()->make($this->args["controller"]);
         if (method_exists($controller, $method)) {
             $result = $controller->callAction($method, array_merge($params, [
