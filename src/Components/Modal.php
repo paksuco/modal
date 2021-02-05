@@ -17,7 +17,7 @@ class Modal extends Component
     public $updates;
     public $updated = false;
 
-    protected $listeners = ["showModal" => "show", "hideModal" => "hide", "refreshModal" => "refreshModal", "setItemData", "setItemData"];
+    protected $listeners = ["showModal" => "show", "hideModal" => "hide", "refreshModal" => "refreshModal", "setItemData" => "setItemData"];
 
     public function mount($updates = [])
     {
@@ -89,6 +89,7 @@ class Modal extends Component
     public function setItemData($data)
     {
         if (["key", "value"] === array_keys($data)) {
+            $this->skipRender();
             $this->item[$data["key"]] = $data["value"];
         }
     }
