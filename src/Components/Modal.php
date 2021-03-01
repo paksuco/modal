@@ -2,6 +2,7 @@
 
 namespace Paksuco\Modal\Components;
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Crypt;
 use Livewire\Component;
 
@@ -96,7 +97,7 @@ class Modal extends Component
 
     public function trigger($method, $params = [])
     {
-        $controller = app()->make($this->args["controller"]);
+        $controller = App::make($this->args["controller"]);
         if (method_exists($controller, $method)) {
             $result = $controller->callAction($method, array_merge($params, [
                 "item" => $this->item
