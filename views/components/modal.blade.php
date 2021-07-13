@@ -10,8 +10,8 @@
         </div>
         <div class="pm-body">
             @if ($errors->any())
-            <x-paksuco-modal-alert color="red" textcolor="white" icon="fa fa-exclamation-triangle">
-                <p class="pl-1 pr-5 mb-2">@lang("Oops, there was a problem, please check your input and submit the form again.")</p>
+            <x-paksuco-modal-alert color="red" textcolor="red-900" icon="fa fa-exclamation-triangle">
+                <div class="mb-2 mr-6">@lang("Oops, there was a problem, please check your input and submit the form again.")</div>
                 <ul>
                     @foreach ($errors->all() as $error)
                     <li>- {{ $error }}</li>
