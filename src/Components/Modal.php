@@ -15,12 +15,17 @@ class Modal extends Component
     public $args;
     public $modal_class;
     public $isNewRecord;
-    public $updates;
-    public $updated = false;
+    public $dataUpdates;
+    public $dataUpdated = false;
 
-    protected $listeners = ["showModal" => "show", "hideModal" => "hide", "refreshModal" => "refreshModal", "setItemData" => "setItemData"];
+    protected $listeners = [
+        "showModal" => "show",
+        "hideModal" => "hide",
+        "refreshModal" => "refreshModal",
+        "setItemData" => "setItemData"
+    ];
 
-    public function mount($updates = [])
+    public function mount($dataUpdates = [])
     {
         $this->modal_class = "";
         $this->shown = false;
@@ -28,7 +33,7 @@ class Modal extends Component
         $this->args = null;
         $this->item = null;
         $this->isNewRecord = true;
-        $this->updates = $updates;
+        $this->dataUpdates = $dataUpdates;
     }
 
     public function show($hash)
@@ -66,7 +71,7 @@ class Modal extends Component
         $this->item = $item->toArray();
 
         foreach ($this->item as $key => $value) {
-            $this->updated("item." . $key, $value);
+            $this->memberUpdate("item." . $key, $value);
         }
 
         $this->shown = true;
@@ -75,16 +80,21 @@ class Modal extends Component
 
     public function refreshModal()
     {
-        $this->updated = !$this->updated;
+        $this->dataUpdated = !$this->dataUpdated;
         $this->shown = true;
         $this->render();
     }
 
+    public function memberUpdate($name, $value)
+    {
+        if (array_key_exists($name, $this->dataUpdates)) {
+            $this->dataUpdates[$name]($this, $value);
+        }
+    }
+
     public function updated($name, $value)
     {
-        if (array_key_exists($name, $this->updates)) {
-            $this->updates[$name]($this, $value);
-        }
+        $this->memberUpdate($name, $value);
     }
 
     public function setItemData($data)
